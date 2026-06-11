@@ -79,3 +79,68 @@ Explanation:
 =================================================
 
 """
+def get_numeric_input(prompt, default_value=None):
+    while True:
+        user_input = input(prompt)
+        if not user_input and default_value is not None:
+            return default_value
+        try:
+            return float(user_input)
+        except ValueError:
+            print("Invalid input. Please enter a numeric value.")
+
+class Student:
+    def __init__(self, name, roll, marks=None):
+        self.name = name
+        self.roll = roll
+        if marks is None:
+            self.marks = []
+        else:
+            self.marks = list(marks)
+
+    def add_mark(self, mark):
+        if not (0 <= mark <= 100):
+            print(f"Warning: Mark {mark} for {self.name} is out of valid range (0-100). Ignoring.")
+        else:
+            self.marks.append(mark)
+
+    def total(self):
+        return sum(self.marks)
+
+    def average(self):
+        if not self.marks:
+            return 0.0
+        return self.total() / len(self.marks)
+
+    def grade(self):
+        avg = self.average()
+        if avg >= 90:
+            return "A"
+        elif avg >= 75:
+            return "B"
+        elif avg >= 50:
+            return "C"
+        else:
+            return "F"
+
+    def report(self):
+        return (self.name, self.roll, self.total(), self.average(), self.grade())
+
+students = []
+num_students = int(get_numeric_input("Enter the number of students to create: "))
+
+for i in range(num_students):
+    print(f"\n--- Enter Details for Student {i+1} ---")
+    name = input("Enter student's name: ")
+    roll = int(get_numeric_input("Enter student's roll number: "))
+    student = Student(name, roll)
+
+    num_marks = int(get_numeric_input(f"How many marks for {name}?: "))
+    for j in range(num_marks):
+        mark = int(get_numeric_input(f"Enter mark {j+1} for {name}: "))
+        student.add_mark(mark)
+    students.append(student)
+
+print("\n--- Student Reports ---")
+for student in students:
+    print(student.report())

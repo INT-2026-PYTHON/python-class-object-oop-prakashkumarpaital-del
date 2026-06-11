@@ -89,3 +89,65 @@ Explanation:
 =================================================
 
 """
+def get_numeric_input(prompt, default_value=None):
+    while True:
+        user_input = input(prompt)
+        if not user_input and default_value is not None:
+            return default_value
+        try:
+            return float(user_input)
+        except ValueError:
+            print("Invalid input. Please enter a numeric value.")
+
+class Counter:
+    total = 0
+
+    def __init__(self, name):
+        self.name = name
+        self.count = 0
+
+    def increment(self, step=1):
+        self.count += step
+        Counter.total += step
+
+    def reset(self):
+        self.count = 0
+
+    @staticmethod
+    def show_total():
+        return Counter.total
+
+    def __str__(self):
+        return f"{self.name}: count={self.count}"
+
+num_counters = int(get_numeric_input("Enter number of counters to create: "))
+counters = []
+for i in range(num_counters):
+    counter_name = input(f"Enter name for Counter {i+1}: ")
+    counters.append(Counter(counter_name))
+
+if counters:
+    if len(counters) >= 1:
+        increment_c1 = int(get_numeric_input(f"Enter number of increments for {counters[0].name}: "))
+        for _ in range(increment_c1):
+            counters[0].increment()
+
+    if len(counters) >= 2:
+        increment_c2 = int(get_numeric_input(f"Enter number of increments for {counters[1].name}: "))
+        for _ in range(increment_c2):
+            counters[1].increment()
+
+    if len(counters) >= 3:
+        increment_step_c3 = int(get_numeric_input(f"Enter increment step for {counters[2].name}: "))
+        counters[2].increment(increment_step_c3)
+
+    if len(counters) >= 1:
+        reset_choice = input(f"Do you want to reset {counters[0].name}? (yes/no): ").lower()
+        if reset_choice == 'yes':
+            counters[0].reset()
+
+    for counter in counters:
+        print(counter)
+    print(f"Total across all counters: {Counter.show_total()}")
+else:
+    print("No counters were created.")
